@@ -1,6 +1,6 @@
-import { mockAuthentication } from '../../../domain/test/mock-authentication'
-import { HttpPostClientSpy } from '../../test/mock-http-client'
-import { RemoteAuthentication } from './remote-autentication'
+import { mockAuthentication } from '@/domain/test/mock-authentication'
+import { HttpPostClientSpy } from '@/data/test/mock-http-client'
+import { RemoteAuthentication } from '@/data/usecases/authentication/remote-autentication'
 import { faker } from '@faker-js/faker'
 
 type SutTypes = {
