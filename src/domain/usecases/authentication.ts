@@ -4,7 +4,7 @@ export interface Authentication {
   auth: (input: AuthenticationInput) => Promise<AccountModel>
 }
 
-type AuthenticationInput = {
+export type AuthenticationInput = {
   email: string
   password: string
 }
