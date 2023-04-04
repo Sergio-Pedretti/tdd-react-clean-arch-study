@@ -2,9 +2,11 @@ import { type HttpPostClientInput, type HttpPostClient } from '../protocols/http
 
 export class HttpPostClientSpy implements HttpPostClient {
   url?: string
+  body?: object
 
-  async post ({ url }: HttpPostClientInput): Promise<void> {
+  async post ({ url, body }: HttpPostClientInput): Promise<void> {
     this.url = url
+    this.body = body
     await Promise.resolve()
   }
 }
