@@ -1,20 +1,22 @@
 import { mockAuthentication } from '@/domain/test/mock-authentication'
 import { HttpPostClientSpy } from '@/data/test/mock-http-client'
 import { RemoteAuthentication } from '@/data/usecases/authentication/remote-autentication'
-import { faker } from '@faker-js/faker'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { HttpStatusCode } from '@/data/protocols/http/response'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { ServerError } from '@/domain/errors/server-error'
 import { NotFoundError } from '@/domain/errors/not-found-error'
+import { type AuthenticationInput } from '@/domain/usecases/authentication'
+import { type AccountModel } from '@/domain/models/account-model'
+import { faker } from '@faker-js/faker'
 
 type SutTypes = {
   sut: RemoteAuthentication
-  httpPostClientSpy: HttpPostClientSpy
+  httpPostClientSpy: HttpPostClientSpy<AuthenticationInput, AccountModel>
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
-  const httpPostClientSpy = new HttpPostClientSpy()
+  const httpPostClientSpy = new HttpPostClientSpy<AuthenticationInput, AccountModel>()
   const sut = new RemoteAuthentication(url, httpPostClientSpy)
   return {
     sut,
