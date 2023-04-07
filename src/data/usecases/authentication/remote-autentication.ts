@@ -1,11 +1,8 @@
-import { type HttpPostClient } from '@/data/protocols/http/postClient'
-import { HttpStatusCode } from '@/data/protocols/http/response'
-import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
-import { NotFoundError } from '@/domain/errors/not-found-error'
-import { ServerError } from '@/domain/errors/server-error'
-import { UnexpectedError } from '@/domain/errors/unexpected-error'
-import { type AccountModel } from '@/domain/models/account-model'
-import { type AuthenticationInput, type Authentication } from '@/domain/usecases/authentication'
+import { HttpStatusCode } from '@/data/protocols/http'
+import { type AccountModel } from '@/domain/models'
+import { type HttpPostClient } from '@/data/protocols/http'
+import { type AuthenticationInput, type Authentication } from '@/domain/usecases'
+import { InvalidCredentialsError, NotFoundError, ServerError, UnexpectedError } from '@/domain/errors'
 
 export class RemoteAuthentication implements Authentication {
   constructor (

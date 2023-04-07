@@ -1,4 +1,4 @@
-import { type HttpResponse } from '@/data/protocols/http/response'
+import { type HttpResponse } from '.'
 
 export type HttpPostClientInput<T> = {
   url: string

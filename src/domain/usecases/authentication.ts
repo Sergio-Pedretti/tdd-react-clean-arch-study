@@ -1,4 +1,4 @@
-import { type AccountModel } from '@/domain/models/account-model'
+import { type AccountModel } from '@/domain/models'
 
 export interface Authentication {
   auth: (input: AuthenticationInput) => Promise<AccountModel | undefined>
