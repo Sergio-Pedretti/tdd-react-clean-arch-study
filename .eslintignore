@@ -1,6 +1,7 @@
 /node_modules
 coverage
 .vscode
-public
+src/global.css
+src/index.html
 vite.config.ts
 *.scss
