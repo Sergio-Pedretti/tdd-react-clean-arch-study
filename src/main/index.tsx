@@ -1,9 +1,10 @@
 import React from 'react'
+import ReactDOM from 'react-dom/client'
 
-export const App = (): JSX.Element => {
-  return (
-    <div>
-    Hello Galera de Cowboy
-    </div>
-  )
-}
+const root = document.getElementById('root') as HTMLElement
+
+ReactDOM.createRoot(root).render(
+  <React.StrictMode>
+    <div>Greetings</div>
+  </React.StrictMode>
+)
