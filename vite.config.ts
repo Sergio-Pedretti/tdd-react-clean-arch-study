@@ -2,9 +2,9 @@ import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 
 export default defineConfig({
-  plugins: [reactRefresh()],
-  server: {
-    port:3000
-  },
-   publicDir: 'public'
+    root: 'public',
+    plugins: [reactRefresh()],
+    server: {
+        port:3000
+    }
 })
