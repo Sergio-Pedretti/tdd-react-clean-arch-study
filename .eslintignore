@@ -3,3 +3,4 @@ coverage
 .vscode
 public
 vite.config.ts
+*.scss
