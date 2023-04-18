@@ -78,22 +78,6 @@ button {
                 text-decoration: underline;
             }
         }
-
-        .errorWrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 120px;
-
-            .spinner {
-                margin-top: 15px;
-            }
-            .error {
-                margin-top: 15px;
-                color: $primaryLight
-            }
-        }
     }
 
 }
