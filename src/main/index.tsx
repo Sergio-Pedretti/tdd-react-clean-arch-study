@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Router } from '@/presentations/components'
+import '@/presentations/styles/global.module.scss'
 
 const root = document.getElementById('root') as HTMLElement
 
