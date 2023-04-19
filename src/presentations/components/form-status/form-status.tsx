@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import content from './form-status.module.scss'
 import { Spinner } from '@/presentations/components'
-import Context from '@/presentations/contexts/form/form-context'
+import { useLogin } from '@/presentations/contexts/form/form-context'
 
 export const FormStatus: React.FC = () => {
-  const { state, errorState } = useContext(Context)
+  const { state, errorState } = useLogin()
   return (
     <div data-testid="error-wrap" className={content.errorWrap}>
         {state.isLoading && <Spinner className={content.spinner} />}
