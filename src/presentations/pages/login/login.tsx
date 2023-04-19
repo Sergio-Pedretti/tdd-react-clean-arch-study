@@ -20,9 +20,9 @@ export const Login: React.FC = () => {
       <Context.Provider value={state}>
         <form className={content.form}>
           <h2>Login</h2>
-          <Input type='email' name='email' placeholder='Digite seu e-mail' />
-          <Input type='password' name='password' placeholder='Digite sua senha' />
-          <button className={content.submit} type='submit'>Entrar</button>
+          <Input data-testid='email' type='email' name='email' placeholder='Digite seu e-mail' />
+          <Input data-testid='password' type='password' name='password' placeholder='Digite sua senha' />
+          <button data-testid='submit' disabled className={content.submit} type='submit'>Entrar</button>
           <span className={content.link}>Criar conta</span>
           <FormStatus />
         </form>
