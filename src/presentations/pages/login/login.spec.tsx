@@ -1,7 +1,7 @@
 import React from 'react'
 import { type RenderResult, render, cleanup, fireEvent } from '@testing-library/react'
 import { Login } from './login'
-import { ValidationSpy } from '@/presentations/test/mock-validation'
+import { ValidationSpy } from '@/presentations/test'
 import { faker } from '@faker-js/faker'
 
 type SutTypes = {
