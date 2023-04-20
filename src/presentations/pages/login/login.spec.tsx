@@ -1,20 +1,12 @@
 import React from 'react'
 import { type RenderResult, render, cleanup, fireEvent } from '@testing-library/react'
 import { Login } from './login'
-import { type Validation } from '@/presentations/protocols/validation'
+import { ValidationSpy } from '@/presentations/test/mock-validation'
+import { faker } from '@faker-js/faker'
 
 type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
-}
-export class ValidationSpy implements Validation {
-  errorMessage: string
-  input: object
-
-  validate (input: object): string {
-    this.input = input
-    return this.errorMessage
-  }
 }
 
 const makeSut = (): SutTypes => {
@@ -56,23 +48,25 @@ describe('Login Component', () => {
 
   it('should call validation with correct email', () => {
     const emailInput = sut.getByTestId('email') as HTMLInputElement
+    const fakeEmail = faker.internet.email()
 
-    fireEvent.change(emailInput, { target: { value: 'any_email' } })
+    fireEvent.change(emailInput, { target: { value: fakeEmail } })
 
-    expect(emailInput.value).toBe('any_email')
+    expect(emailInput.value).toBe(fakeEmail)
     expect(validationSpy.input).toEqual({
-      input: 'any_email'
+      input: fakeEmail
     })
   })
 
   it('should call validation with correct password', () => {
     const passwordInput = sut.getByTestId('password') as HTMLInputElement
+    const fakePassword = faker.internet.password()
 
-    fireEvent.change(passwordInput, { target: { value: 'any_password' } })
+    fireEvent.change(passwordInput, { target: { value: fakePassword } })
 
-    expect(passwordInput.value).toBe('any_password')
+    expect(passwordInput.value).toBe(fakePassword)
     expect(validationSpy.input).toEqual({
-      input: 'any_password'
+      input: fakePassword
     })
   })
 })
