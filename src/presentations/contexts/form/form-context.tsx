@@ -10,13 +10,18 @@ type errorStateProps = {
   main: string
 }
 
+type formProps = {
+  email: string
+  password: string
+}
+
 type LoginContextProps = {
   state: stateProps
   setState: React.Dispatch<React.SetStateAction<stateProps>>
   errorState: errorStateProps
   setErrorState: React.Dispatch<React.SetStateAction<errorStateProps>>
-  input: string
-  setInput: React.Dispatch<React.SetStateAction<string>>
+  login: formProps
+  setLogin: React.Dispatch<React.SetStateAction<formProps>>
 }
 
 const loginProps: LoginContextProps = {
@@ -30,8 +35,11 @@ const loginProps: LoginContextProps = {
     main: ''
   },
   setErrorState: () => {},
-  input: '',
-  setInput: () => {}
+  login: {
+    email: '',
+    password: ''
+  },
+  setLogin: () => {}
 }
 
 const LoginContext = createContext(loginProps)
@@ -48,10 +56,13 @@ export const LoginProvider = ({ children }: LoginProviderProps): JSX.Element => 
     passwordError: 'Campo Obrigatório',
     main: ''
   })
-  const [input, setInput] = useState<string>('')
+  const [login, setLogin] = useState<formProps>({
+    email: '',
+    password: ''
+  })
 
   return (
-    <LoginContext.Provider value={{ state, setState, errorState, setErrorState, input, setInput }}>
+    <LoginContext.Provider value={{ state, setState, errorState, setErrorState, login, setLogin }}>
       {children}
     </LoginContext.Provider>
   )

@@ -9,13 +9,14 @@ type Props = {
 }
 
 const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
-  const { input } = useLogin()
+  const { login } = useLogin()
 
   useEffect(() => {
     validation?.validate({
-      input
+      email: login.email,
+      password: login.password
     })
-  }, [input])
+  }, [login])
 
   return (
     <div className={content.login}>

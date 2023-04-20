@@ -46,27 +46,20 @@ describe('Login Component', () => {
     expect(passwordStatus.textContent).toBe('🔴')
   })
 
-  it('should call validation with correct email', () => {
+  it('should call validation with correct email and password', () => {
     const emailInput = sut.getByTestId('email') as HTMLInputElement
     const fakeEmail = faker.internet.email()
-
-    fireEvent.change(emailInput, { target: { value: fakeEmail } })
-
-    expect(emailInput.value).toBe(fakeEmail)
-    expect(validationSpy.input).toEqual({
-      input: fakeEmail
-    })
-  })
-
-  it('should call validation with correct password', () => {
     const passwordInput = sut.getByTestId('password') as HTMLInputElement
     const fakePassword = faker.internet.password()
 
+    fireEvent.change(emailInput, { target: { value: fakeEmail } })
     fireEvent.change(passwordInput, { target: { value: fakePassword } })
 
+    expect(emailInput.value).toBe(fakeEmail)
     expect(passwordInput.value).toBe(fakePassword)
     expect(validationSpy.input).toEqual({
-      input: fakePassword
+      email: fakeEmail,
+      password: fakePassword
     })
   })
 })
