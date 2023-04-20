@@ -9,9 +9,20 @@ type Props = {
 }
 
 const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
-  const { login } = useLogin()
+  const { login, setErrorState, errorState } = useLogin()
 
   useEffect(() => {
+    setErrorState({
+      ...errorState,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      emailError: validation!.validate({
+        email: login.email
+      }),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      passwordError: validation!.validate({
+        password: login.password
+      })
+    })
     validation?.validate({
       email: login.email,
       password: login.password
