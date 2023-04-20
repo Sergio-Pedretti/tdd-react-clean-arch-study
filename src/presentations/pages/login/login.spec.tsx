@@ -107,4 +107,18 @@ describe('Login Component', () => {
     expect(emailStatus.title).toBe('')
     expect(emailStatus.textContent).toBe('🟢')
   })
+
+  it('should enable button if validation succeeds', () => {
+    validationSpy.errorMessage = ''
+    const emailInput = sut.getByTestId('email') as HTMLInputElement
+    const fakeEmail = faker.internet.email()
+    const passwordInput = sut.getByTestId('password') as HTMLInputElement
+    const fakePassword = faker.internet.password()
+    const submitButton = sut.getByTestId('submit') as HTMLButtonElement
+
+    fireEvent.change(emailInput, { target: { value: fakeEmail } })
+    fireEvent.change(passwordInput, { target: { value: fakePassword } })
+
+    expect(submitButton.disabled).toBe(false)
+  })
 })
