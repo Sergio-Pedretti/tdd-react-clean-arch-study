@@ -8,14 +8,9 @@ interface Props extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLIn
 
 export const Input: React.FC<Props> = (props: Props) => {
   const { errorState, setInput } = useLogin()
-  console.log(props.name)
   const error = errorState[`${props.name}Error`]
 
-  const enableInput = (event: React.FocusEvent<HTMLInputElement>): void => {
-    event.target.readOnly = false
-  }
-
-  const handleChange = (event: React.FocusEvent<HTMLInputElement>): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setInput(event.target.value)
   }
 
@@ -29,7 +24,7 @@ export const Input: React.FC<Props> = (props: Props) => {
 
   return (
     <div className={content.inputWrap}>
-      <input data-testid={props.name} readOnly onFocus={enableInput} {...props} onChange={handleChange}></input>
+      <input data-testid={props.name} {...props} onChange={handleChange}></input>
       <span data-testid={`${props.name}-status`} title={getTitle()} className={content.status}>{getStatus()}</span>
     </div>
   )

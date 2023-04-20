@@ -8,11 +8,10 @@ type Props = {
   validation: Validation | undefined
 }
 
-export const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
+const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
   const { input } = useLogin()
 
   useEffect(() => {
-    console.log(input)
     validation?.validate({
       input
     })
@@ -34,10 +33,10 @@ export const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
   )
 }
 
-export const Login = (): JSX.Element => {
+export const Login: React.FC<Props> = ({ validation }: Props): JSX.Element => {
   return (
     <LoginProvider>
-      <LoginConsumer validation={undefined} ></LoginConsumer>
+      <LoginConsumer validation={validation} ></LoginConsumer>
     </LoginProvider>
   )
 }

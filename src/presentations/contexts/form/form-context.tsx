@@ -43,13 +43,11 @@ export const LoginProvider = ({ children }: LoginProviderProps): JSX.Element => 
   const [state, setState] = useState<stateProps>({
     isLoading: false
   })
-
   const [errorState, setErrorState] = useState<errorStateProps>({
     emailError: 'Campo Obrigatório',
     passwordError: 'Campo Obrigatório',
     main: ''
   })
-
   const [input, setInput] = useState<string>('')
 
   return (
