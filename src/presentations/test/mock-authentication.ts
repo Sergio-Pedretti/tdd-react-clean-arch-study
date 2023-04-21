@@ -7,7 +7,6 @@ export class AuthenticationSpy implements Authentication {
   input: AuthenticationInput
   countCalls = 0
   async auth (input: AuthenticationInput): Promise<AccountModel | undefined> {
-    console.log(input)
     this.input = input
     this.countCalls++
     return await Promise.resolve(this.account)
