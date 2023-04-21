@@ -11,7 +11,7 @@ type Props = {
 }
 
 const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) => {
-  const { login, setErrorState, errorState, setState } = useLogin()
+  const { login, errorState, setErrorState, state, setState } = useLogin()
 
   useEffect(() => {
     setErrorState({
@@ -34,6 +34,9 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) =
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
+    if (state.isLoading) {
+      return
+    }
     setState({
       isLoading: true
     })
