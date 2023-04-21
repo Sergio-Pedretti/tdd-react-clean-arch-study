@@ -158,11 +158,23 @@ describe('Login Component', () => {
     validationSpy.errorMessage = ''
     const fakeEmail = faker.internet.email()
     const fakePassword = faker.internet.password()
+
     simulateValidSubmit(sut, fakeEmail, fakePassword)
 
     expect(authenticationSpy.input).toEqual({
       email: fakeEmail,
       password: fakePassword
     })
+  })
+
+  it('should call authentication with correct values', () => {
+    validationSpy.errorMessage = ''
+    const fakeEmail = faker.internet.email()
+    const fakePassword = faker.internet.password()
+
+    simulateValidSubmit(sut, fakeEmail, fakePassword)
+    simulateValidSubmit(sut, fakeEmail, fakePassword)
+
+    expect(authenticationSpy.countCalls).toBe(1)
   })
 })
