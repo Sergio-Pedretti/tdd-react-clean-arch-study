@@ -9,9 +9,13 @@ type SutTypes = {
   validationSpy: ValidationSpy
 }
 
-const makeSut = (): SutTypes => {
+type SutParams = {
+  validationError: string
+}
+
+const makeSut = (params: SutParams): SutTypes => {
   const validationSpy = new ValidationSpy()
-  validationSpy.errorMessage = faker.random.words()
+  validationSpy.errorMessage = params?.validationError
   const sut = render(<Login validation={validationSpy} />)
   return {
     sut,
@@ -24,7 +28,8 @@ describe('Login Component', () => {
   let validationSpy: ValidationSpy
 
   beforeEach(() => {
-    const initals = makeSut()
+    const validationError = faker.random.words()
+    const initals = makeSut({ validationError })
     sut = initals.sut
     validationSpy = initals.validationSpy
   })
