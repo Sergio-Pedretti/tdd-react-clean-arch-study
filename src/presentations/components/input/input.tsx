@@ -9,7 +9,6 @@ interface Props extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLIn
 export const Input: React.FC<Props> = (props: Props) => {
   const { errorState, setLogin, login } = useLogin()
   const error = errorState[`${props.name}Error`]
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setLogin({
       ...login,

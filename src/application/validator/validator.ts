@@ -2,10 +2,12 @@ import { type Validation } from '@/presentations/protocols/validation'
 
 export class LoginValidation implements Validation {
   errorMessage: string
-  input: Record<string, string>
+  fieldName: string
+  fieldValue: string
 
-  validate (input: Record<string, string>): string {
-    this.input = input
+  validate (fieldName: string, fieldValue: string): string {
+    this.fieldName = fieldName
+    this.fieldValue = fieldValue
     return this.errorMessage
   }
 }

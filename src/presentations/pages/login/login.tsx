@@ -13,19 +13,22 @@ const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
 
   useEffect(() => {
     setErrorState({
-      ...errorState,
-      emailError: validation.validate({
-        email: login.email
-      }),
-      passwordError: validation.validate({
-        password: login.password
-      })
+      main: errorState.main,
+      passwordError: errorState.passwordError,
+      emailError: validation.validate('email', login.email)
     })
-    validation.validate({
-      email: login.email,
-      password: login.password
+
+    validation.validate('email', login.email)
+  }, [login.email])
+
+  useEffect(() => {
+    setErrorState({
+      main: errorState.main,
+      emailError: errorState.emailError,
+      passwordError: validation.validate('password', login.password)
     })
-  }, [login])
+    validation.validate('password', login.password)
+  }, [login.password])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
