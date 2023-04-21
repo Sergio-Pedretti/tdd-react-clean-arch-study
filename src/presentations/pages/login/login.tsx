@@ -3,12 +3,14 @@ import content from './login-style.module.scss'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/components'
 import { LoginProvider, useLogin } from '@/presentations/contexts/form/form-context'
 import { type Validation } from '@/presentations/protocols/validation'
+import { type Authentication } from '@/domain/usecases'
 
 type Props = {
   validation: Validation
+  authentication: Authentication | undefined
 }
 
-const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
+const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) => {
   const { login, setErrorState, errorState, setState } = useLogin()
 
   useEffect(() => {
@@ -30,10 +32,14 @@ const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
     validation.validate('password', login.password)
   }, [login.password])
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     setState({
       isLoading: true
+    })
+    await authentication?.auth({
+      email: login.email,
+      password: login.password
     })
   }
 
@@ -53,10 +59,10 @@ const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
   )
 }
 
-export const Login: React.FC<Props> = ({ validation }: Props): JSX.Element => {
+export const Login: React.FC<Props> = ({ validation, authentication }: Props): JSX.Element => {
   return (
     <LoginProvider>
-      <LoginConsumer validation={validation} ></LoginConsumer>
+      <LoginConsumer validation={validation} authentication={authentication}></LoginConsumer>
     </LoginProvider>
   )
 }

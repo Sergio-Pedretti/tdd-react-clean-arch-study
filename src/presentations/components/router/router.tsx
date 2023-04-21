@@ -8,7 +8,7 @@ export const Router = (): JSX.Element => {
   return (
     <BrowserRouter>
         <Routes>
-            <Route path='/login' index element={<Login validation={validation}/>} />
+            <Route path='/login' index element={<Login validation={validation} authentication={undefined}/>} />
         </Routes>
     </BrowserRouter>
   )

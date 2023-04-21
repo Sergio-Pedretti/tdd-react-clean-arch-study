@@ -1,7 +1,7 @@
 import { type Validation } from '@/presentations/protocols/validation'
 
 export class LoginValidation implements Validation {
-  errorMessage: string
+  errorMessage: string = 'Campo Obrigatório!'
   fieldName: string
   fieldValue: string
 
