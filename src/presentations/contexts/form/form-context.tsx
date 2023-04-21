@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext } from 'react'
 
 type stateProps = {
-  isLoading: false
+  isLoading: boolean
 }
 
 type errorStateProps = {

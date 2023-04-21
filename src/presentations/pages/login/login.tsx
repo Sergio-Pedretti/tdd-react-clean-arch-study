@@ -9,7 +9,7 @@ type Props = {
 }
 
 const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
-  const { login, setErrorState, errorState } = useLogin()
+  const { login, setErrorState, errorState, setState } = useLogin()
 
   useEffect(() => {
     setErrorState({
@@ -29,10 +29,17 @@ const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
     })
   }, [login])
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault()
+    setState({
+      isLoading: true
+    })
+  }
+
   return (
     <div className={content.login}>
       <LoginHeader />
-        <form className={content.form}>
+        <form className={content.form} onSubmit={handleSubmit}>
           <h2>Login</h2>
           <Input type='email' name='email' placeholder='Digite seu e-mail' />
           <Input type='password' name='password' placeholder='Digite sua senha' />
