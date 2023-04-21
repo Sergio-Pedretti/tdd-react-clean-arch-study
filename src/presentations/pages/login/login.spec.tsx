@@ -177,4 +177,12 @@ describe('Login Component', () => {
 
     expect(authenticationSpy.countCalls).toBe(1)
   })
+
+  it('should not call Authentication if form is invalid', () => {
+    const form = sut.getByTestId('form')
+
+    fireEvent.submit(form)
+
+    expect(authenticationSpy.countCalls).toBe(0)
+  })
 })
