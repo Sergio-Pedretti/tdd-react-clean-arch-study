@@ -5,7 +5,7 @@ import { LoginProvider, useLogin } from '@/presentations/contexts/form/form-cont
 import { type Validation } from '@/presentations/protocols/validation'
 
 type Props = {
-  validation: Validation | undefined
+  validation: Validation
 }
 
 const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
@@ -14,16 +14,14 @@ const LoginConsumer: React.FC<Props> = ({ validation }: Props) => {
   useEffect(() => {
     setErrorState({
       ...errorState,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      emailError: validation!.validate({
+      emailError: validation.validate({
         email: login.email
       }),
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      passwordError: validation!.validate({
+      passwordError: validation.validate({
         password: login.password
       })
     })
-    validation?.validate({
+    validation.validate({
       email: login.email,
       password: login.password
     })

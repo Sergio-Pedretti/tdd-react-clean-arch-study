@@ -30,8 +30,8 @@ const loginProps: LoginContextProps = {
   },
   setState: () => {},
   errorState: {
-    emailError: '',
-    passwordError: '',
+    emailError: 'Campo Obrigatório!',
+    passwordError: 'Campo Obrigatório!',
     main: ''
   },
   setErrorState: () => {},
@@ -52,8 +52,8 @@ export const LoginProvider = ({ children }: LoginProviderProps): JSX.Element => 
     isLoading: false
   })
   const [errorState, setErrorState] = useState<errorStateProps>({
-    emailError: '',
-    passwordError: '',
+    emailError: 'Campo Obrigatório!',
+    passwordError: 'Campo Obrigatório!',
     main: ''
   })
   const [login, setLogin] = useState<formProps>({
