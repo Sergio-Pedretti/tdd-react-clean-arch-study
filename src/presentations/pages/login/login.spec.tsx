@@ -21,6 +21,16 @@ const makeSut = (): SutTypes => {
   }
 }
 
+const simulateValidSubmit = (sut: RenderResult, email: string, password: string): void => {
+  const emailInput = sut.getByTestId('email') as HTMLInputElement
+  const passwordInput = sut.getByTestId('password') as HTMLInputElement
+  const submitButton = sut.getByTestId('submit') as HTMLButtonElement
+
+  fireEvent.change(emailInput, { target: { value: email } })
+  fireEvent.change(passwordInput, { target: { value: password } })
+  fireEvent.click(submitButton)
+}
+
 describe('Login Component', () => {
   let sut: RenderResult
   let validationSpy: ValidationSpy
@@ -135,15 +145,9 @@ describe('Login Component', () => {
 
   it('should show spinner on submit', () => {
     validationSpy.errorMessage = ''
-    const emailInput = sut.getByTestId('email') as HTMLInputElement
     const fakeEmail = faker.internet.email()
-    const passwordInput = sut.getByTestId('password') as HTMLInputElement
     const fakePassword = faker.internet.password()
-    const submitButton = sut.getByTestId('submit') as HTMLButtonElement
-
-    fireEvent.change(emailInput, { target: { value: fakeEmail } })
-    fireEvent.change(passwordInput, { target: { value: fakePassword } })
-    fireEvent.click(submitButton)
+    simulateValidSubmit(sut, fakeEmail, fakePassword)
 
     const spinner = sut.getByTestId('spinner')
 
@@ -152,15 +156,9 @@ describe('Login Component', () => {
 
   it('should call authentication with correct values', () => {
     validationSpy.errorMessage = ''
-    const emailInput = sut.getByTestId('email') as HTMLInputElement
     const fakeEmail = faker.internet.email()
-    const passwordInput = sut.getByTestId('password') as HTMLInputElement
     const fakePassword = faker.internet.password()
-    const submitButton = sut.getByTestId('submit') as HTMLButtonElement
-
-    fireEvent.change(emailInput, { target: { value: fakeEmail } })
-    fireEvent.change(passwordInput, { target: { value: fakePassword } })
-    fireEvent.click(submitButton)
+    simulateValidSubmit(sut, fakeEmail, fakePassword)
 
     expect(authenticationSpy.input).toEqual({
       email: fakeEmail,
