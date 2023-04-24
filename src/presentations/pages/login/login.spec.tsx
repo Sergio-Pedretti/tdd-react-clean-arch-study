@@ -1,5 +1,6 @@
 import React from 'react'
 import { type RenderResult, render, cleanup, fireEvent, waitFor } from '@testing-library/react'
+import 'jest-localstorage-mock'
 import { Login } from './login'
 import { ValidationSpy, AuthenticationSpy } from '@/presentations/test'
 import { faker } from '@faker-js/faker'
@@ -38,6 +39,7 @@ describe('Login Component', () => {
   let authenticationSpy: AuthenticationSpy
 
   beforeEach(() => {
+    localStorage.clear()
     const initals = makeSut()
     sut = initals.sut
     validationSpy = initals.validationSpy
@@ -202,5 +204,16 @@ describe('Login Component', () => {
 
     expect(mainError.textContent).toBe(error.message)
     expect(errorWrap.childElementCount).toBe(1)
+  })
+
+  it('should add accessToken to localStorage in success', async () => {
+    validationSpy.errorMessage = ''
+    const fakeEmail = faker.internet.email()
+    const fakePassword = faker.internet.password()
+    const form = sut.getByTestId('form')
+    simulateValidSubmit(sut, fakeEmail, fakePassword)
+    await waitFor(() => form)
+
+    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
   })
 })
