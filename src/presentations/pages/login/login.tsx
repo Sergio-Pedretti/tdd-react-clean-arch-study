@@ -4,6 +4,7 @@ import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/componen
 import { LoginProvider, useLogin } from '@/presentations/contexts/form/form-context'
 import { type Validation } from '@/presentations/protocols/validation'
 import { type Authentication } from '@/domain/usecases'
+import { Link } from 'react-router-dom'
 
 type Props = {
   validation: Validation
@@ -67,7 +68,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) =
           <Input type='email' name='email' placeholder='Digite seu e-mail' />
           <Input type='password' name='password' placeholder='Digite sua senha' />
           <button data-testid='submit' disabled={!!errorState.emailError || !!errorState.passwordError} className={content.submit} type='submit'>Entrar</button>
-          <span className={content.link}>Criar conta</span>
+          <Link to='/signup' data-testid='signup' className={content.link}>Criar conta</Link>
           <FormStatus />
         </form>
       <Footer />
