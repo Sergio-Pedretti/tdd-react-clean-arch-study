@@ -4,7 +4,7 @@ import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/componen
 import { LoginProvider, useLogin } from '@/presentations/contexts/form/form-context'
 import { type Validation } from '@/presentations/protocols/validation'
 import { type Authentication } from '@/domain/usecases'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   validation: Validation
@@ -13,7 +13,7 @@ type Props = {
 
 const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) => {
   const { login, errorState, setErrorState, state, setState } = useLogin()
-
+  const navigate = useNavigate()
   useEffect(() => {
     setErrorState({
       main: errorState.main,
@@ -48,6 +48,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) =
       })
       if (account) {
         localStorage.setItem('accessToken', account.accessToken)
+        navigate('/')
       }
     } catch (error) {
       setState({
