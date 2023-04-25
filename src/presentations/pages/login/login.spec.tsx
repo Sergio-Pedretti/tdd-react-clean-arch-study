@@ -1,6 +1,7 @@
 import React from 'react'
 import { type RenderResult, render, cleanup, fireEvent, waitFor } from '@testing-library/react'
 import 'jest-localstorage-mock'
+import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { Login } from './login'
 import { ValidationSpy, AuthenticationSpy } from '@/presentations/test'
 import { faker } from '@faker-js/faker'
@@ -15,7 +16,16 @@ type SutTypes = {
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const authenticationSpy = new AuthenticationSpy()
-  const sut = render(<Login validation={validationSpy} authentication={authenticationSpy} />)
+
+  const sut = render(
+    <MemoryRouter initialEntries={['/login']}>
+      <Routes>
+        <Route path='/login' element={<Login validation={validationSpy} authentication={authenticationSpy} />}></Route>
+        <Route path='/signup' element={<div data-testid='route'>signup</div>}></Route>
+      </Routes>
+    </MemoryRouter>
+  )
+
   return {
     sut,
     validationSpy,
@@ -215,5 +225,15 @@ describe('Login Component', () => {
     await waitFor(() => form)
 
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+  })
+
+  it('should go to signup page', async () => {
+    const register = sut.getByTestId('signup')
+
+    fireEvent.click(register)
+
+    const newPage = sut.getByTestId('route')
+
+    expect(newPage.textContent).toBe('signup')
   })
 })
