@@ -1,13 +1,15 @@
+import { faker } from '@faker-js/faker'
+
 interface FieldValidation {
   field: string
-  validate: (value: string) => Error
+  validate: (value: string) => Error | null
 }
 
 class RequiredFieldValidation implements FieldValidation {
   constructor (readonly field: string) {}
 
-  validate (value: string): Error {
-    return new RequiredFieldError()
+  validate (value: string): Error | null {
+    return value ? null : new RequiredFieldError()
   }
 }
 
@@ -25,5 +27,13 @@ describe('RequiredFieldValidation', () => {
     const error = sut.validate('')
 
     expect(error).toEqual(new RequiredFieldError())
+  })
+
+  it('should return falsy if field is not empty', () => {
+    const sut = new RequiredFieldValidation('email')
+
+    const error = sut.validate(faker.random.word())
+
+    expect(error).toBeFalsy()
   })
 })
