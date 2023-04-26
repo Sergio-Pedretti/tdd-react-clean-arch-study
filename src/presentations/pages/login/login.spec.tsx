@@ -1,7 +1,7 @@
 import React from 'react'
-import { type RenderResult, render, cleanup, fireEvent, waitFor } from '@testing-library/react'
+import { type RenderResult, render, cleanup, fireEvent, waitFor, screen } from '@testing-library/react'
 import 'jest-localstorage-mock'
-import { MemoryRouter, Routes, Route } from 'react-router-dom'
+import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Login } from './login'
 import { ValidationSpy, AuthenticationSpy } from '@/presentations/test'
 import { faker } from '@faker-js/faker'
@@ -13,6 +13,11 @@ type SutTypes = {
   authenticationSpy: AuthenticationSpy
 }
 
+const DisplayLocation = (): JSX.Element => {
+  const location = useLocation()
+  return <div data-testid="location-display">{location.pathname}</div>
+}
+
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const authenticationSpy = new AuthenticationSpy()
@@ -20,9 +25,11 @@ const makeSut = (): SutTypes => {
   const sut = render(
     <MemoryRouter initialEntries={['/login']}>
       <Routes>
+        <Route path='/' element={<div data-testid='main'>main</div>}></Route>
         <Route path='/login' element={<Login validation={validationSpy} authentication={authenticationSpy} />}></Route>
         <Route path='/signup' element={<div data-testid='route'>signup</div>}></Route>
       </Routes>
+      <DisplayLocation />
     </MemoryRouter>
   )
 
@@ -226,6 +233,7 @@ describe('Login Component', () => {
     await waitFor(() => form)
 
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+    expect(screen.getByTestId('location-display').textContent).toBe('/')
   })
 
   it('should go to signup page', async () => {
@@ -236,5 +244,6 @@ describe('Login Component', () => {
     const newPage = sut.getByTestId('route')
 
     expect(newPage.textContent).toBe('signup')
+    expect(screen.getByTestId('location-display').textContent).toBe('/signup')
   })
 })
