@@ -1,4 +1,5 @@
 import { type FieldValidation } from '@/validation/protocols'
+import { faker } from '@faker-js/faker'
 
 class EmailValidator implements FieldValidation {
   constructor (readonly field: string) {}
@@ -30,5 +31,13 @@ describe('EmailValidator', () => {
     const error = sut.validate('')
 
     expect(error).toEqual(new InvalidFieldError('email'))
+  })
+
+  it('should return falsy if email is valid', () => {
+    const sut = new EmailValidator('email')
+
+    const result = sut.validate(faker.internet.email())
+
+    expect(result).toBeFalsy()
   })
 })
