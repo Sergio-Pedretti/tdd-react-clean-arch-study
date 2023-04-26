@@ -40,15 +40,33 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const simulateValidSubmit = async (sut: RenderResult, email: string, password: string): Promise<void> => {
-  const emailInput = sut.getByTestId('email') as HTMLInputElement
-  const passwordInput = sut.getByTestId('password') as HTMLInputElement
+const simulateValidSubmit = async (
+  sut: RenderResult,
+  email: string = faker.internet.email(),
+  password: string = faker.internet.password()
+): Promise<void> => {
+  await populateEmailField(sut, email)
+  await populatePasswordField(sut, password)
   const submitButton = sut.getByTestId('submit') as HTMLButtonElement
 
   await waitFor(() => {
-    fireEvent.change(emailInput, { target: { value: email } })
-    fireEvent.change(passwordInput, { target: { value: password } })
     fireEvent.click(submitButton)
+  })
+}
+
+const populateEmailField = async (sut: RenderResult, email: string = faker.internet.email()): Promise<void> => {
+  const emailInput = sut.getByTestId('email') as HTMLInputElement
+
+  await waitFor(() => {
+    fireEvent.change(emailInput, { target: { value: email } })
+  })
+}
+
+const populatePasswordField = async (sut: RenderResult, password: string): Promise<void> => {
+  const passwordInput = sut.getByTestId('password') as HTMLInputElement
+
+  await waitFor(() => {
+    fireEvent.change(passwordInput, { target: { value: password } })
   })
 }
 
@@ -167,10 +185,8 @@ describe('Login Component', () => {
 
   it('should show spinner on submit', async () => {
     validationSpy.errorMessage = ''
-    const fakeEmail = faker.internet.email()
-    const fakePassword = faker.internet.password()
 
-    await simulateValidSubmit(sut, fakeEmail, fakePassword)
+    await simulateValidSubmit(sut)
     const spinner = sut.getByTestId('spinner')
 
     expect(spinner).toBeTruthy()
@@ -191,10 +207,8 @@ describe('Login Component', () => {
 
   it('should call authentication only once', async () => {
     validationSpy.errorMessage = ''
-    const fakeEmail = faker.internet.email()
-    const fakePassword = faker.internet.password()
 
-    await Promise.all([simulateValidSubmit(sut, fakeEmail, fakePassword), simulateValidSubmit(sut, fakeEmail, fakePassword)])
+    await Promise.all([simulateValidSubmit(sut), simulateValidSubmit(sut)])
 
     expect(authenticationSpy.countCalls).toBe(1)
   })
@@ -209,13 +223,11 @@ describe('Login Component', () => {
 
   it('should present Error if Authentication fails', async () => {
     validationSpy.errorMessage = ''
-    const fakeEmail = faker.internet.email()
-    const fakePassword = faker.internet.password()
     const error = new InvalidCredentialsError()
     const errorWrap = sut.getByTestId('error-wrap')
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
 
-    await simulateValidSubmit(sut, fakeEmail, fakePassword)
+    await simulateValidSubmit(sut)
 
     await waitFor(() => errorWrap)
     const mainError = sut.getByTestId('main-error')
@@ -226,10 +238,9 @@ describe('Login Component', () => {
 
   it('should add accessToken to localStorage in success', async () => {
     validationSpy.errorMessage = ''
-    const fakeEmail = faker.internet.email()
-    const fakePassword = faker.internet.password()
     const form = sut.getByTestId('form')
-    await simulateValidSubmit(sut, fakeEmail, fakePassword)
+
+    await simulateValidSubmit(sut)
     await waitFor(() => form)
 
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
