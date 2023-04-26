@@ -1,18 +1,5 @@
-import { type FieldValidation } from '@/validation/protocols'
-
-export class MinLengthValidator implements FieldValidation {
-  constructor (readonly field: string, private readonly minLength: number) {}
-
-  validate (value: string): Error | null {
-    return value.length > this.minLength ? null : new MinLengthError(this.minLength)
-  }
-}
-
-export class MinLengthError extends Error {
-  constructor (minLength: number) {
-    super(`Campo deve ter pelo menos ${minLength} caracteres`)
-  }
-}
+import { MinLengthValidator } from './min-length-validator'
+import { MinLengthError } from '@/validation/errors'
 
 describe('MinLengthValidator', () => {
   it('should return error if value is invalid', () => {
