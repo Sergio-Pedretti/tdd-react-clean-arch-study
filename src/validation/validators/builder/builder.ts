@@ -6,13 +6,12 @@ import { type FieldValidation } from '@/validation/protocols'
 export class BuilderValidator {
   constructor (
     private readonly fieldName: string,
-    private readonly fieldValue: string,
     private readonly validations: FieldValidation[]
   ) {
   }
 
-  static field (fieldName: string, fieldValue: string = ''): BuilderValidator {
-    return new BuilderValidator(fieldName, fieldValue, [])
+  static field (fieldName: string): BuilderValidator {
+    return new BuilderValidator(fieldName, [])
   }
 
   required (): BuilderValidator {
@@ -26,7 +25,7 @@ export class BuilderValidator {
   }
 
   email (): BuilderValidator {
-    this.validations.push(new EmailValidator(this.fieldValue))
+    this.validations.push(new EmailValidator(this.fieldName))
     return this
   }
 

@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker'
 import { MinLengthValidator } from '../min-length/min-length-validator'
 import { RequiredFieldValidation } from '../required-field/required-field-validation'
 import { BuilderValidator } from './builder'
@@ -18,20 +17,18 @@ describe('BuilderValidator', () => {
   })
 
   it('should return EmailValidator', () => {
-    const fakeEmail = faker.internet.email()
-    const validations = BuilderValidator.field('field', fakeEmail).email().build()
+    const validations = BuilderValidator.field('field').email().build()
 
-    expect(validations).toEqual([new EmailValidator(fakeEmail)])
+    expect(validations).toEqual([new EmailValidator('field')])
   })
 
   it('should return a list of validations', () => {
-    const fakeEmail = faker.internet.email()
-    const validations = BuilderValidator.field('field', fakeEmail).required().min(100).email().build()
+    const validations = BuilderValidator.field('field').required().min(100).email().build()
 
     expect(validations).toEqual([
       new RequiredFieldValidation('field'),
       new MinLengthValidator('field', 100),
-      new EmailValidator(fakeEmail)
+      new EmailValidator('field')
     ])
   })
 })
