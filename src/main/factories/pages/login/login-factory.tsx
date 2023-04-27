@@ -5,7 +5,7 @@ import { BuilderValidator } from '@/validation/validators/builder/builder'
 import { ValidationComposite } from '@/validation/validators/composite/composite'
 import React from 'react'
 
-export const makeLogin: React.FC = () => {
+export const MakeLogin: React.FC = () => {
   const url = ''
   const axiosHttpClient = new AxiosHttpClient()
   const remoteAuthentication = new RemoteAuthentication(url, axiosHttpClient)
@@ -15,9 +15,9 @@ export const makeLogin: React.FC = () => {
   ])
 
   return (
-        <Login
-            authentication={remoteAuthentication}
-            validation={validationComposite}
-        />
+    <Login
+      authentication={remoteAuthentication}
+      validation={validationComposite}
+    />
   )
 }

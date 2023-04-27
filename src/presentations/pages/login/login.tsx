@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   validation: Validation
-  authentication: Authentication | undefined
+  authentication: Authentication
 }
 
 const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) => {
