@@ -13,7 +13,7 @@ const makeSut = (field: string, minLength: number): SutTypes => {
 
 describe('MinLengthValidator', () => {
   it('should return error if value is invalid', () => {
-    const { sut } = makeSut('field', 8)
+    const { sut } = makeSut('any_field', 8)
 
     const error = sut.validate('err')
 
@@ -21,7 +21,7 @@ describe('MinLengthValidator', () => {
   })
 
   it('should return falsy if value is valid', () => {
-    const { sut } = makeSut('field', 3)
+    const { sut } = makeSut('any_field', 3)
 
     const result = sut.validate('valid')
 

@@ -23,4 +23,15 @@ describe('BuilderValidator', () => {
 
     expect(validations).toEqual([new EmailValidator(fakeEmail)])
   })
+
+  it('should return a list of validations', () => {
+    const fakeEmail = faker.internet.email()
+    const validations = BuilderValidator.field('field', fakeEmail).required().min(100).email().build()
+
+    expect(validations).toEqual([
+      new RequiredFieldValidation('field'),
+      new MinLengthValidator('field', 100),
+      new EmailValidator(fakeEmail)
+    ])
+  })
 })
