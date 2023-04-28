@@ -69,9 +69,5 @@ export const LoginProvider = ({ children }: LoginProviderProps): JSX.Element => 
 }
 
 export const useLogin = (): LoginContextProps => {
-  const context = useContext(LoginContext)
-  if (context === undefined) {
-    throw new Error('useLogin can only be used inside LoginProvider')
-  }
-  return context
+  return useContext(LoginContext)
 }
