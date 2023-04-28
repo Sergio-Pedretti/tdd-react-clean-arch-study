@@ -42,7 +42,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) =
       setState({
         isLoading: true
       })
-      const account = await authentication?.auth({
+      const account = await authentication.auth({
         email: login.email,
         password: login.password
       })

@@ -9,5 +9,6 @@ export enum HttpStatusCode {
   badRequest = 400,
   ok = 200,
   serverError = 500,
-  notFound = 404
+  notFound = 404,
+  any = 999,
 }

@@ -92,4 +92,14 @@ describe('RemoteAuthentication', () => {
 
     expect(account).toEqual(httpResult)
   })
+
+  it('should throw UnexpectedError if httpClient do not returns any known error', async () => {
+    const { sut, httpPostClientSpy } = makeSut()
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.any
+    }
+    const promise = sut.auth(mockAuthentication())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
 })
