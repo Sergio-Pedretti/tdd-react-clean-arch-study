@@ -1,5 +1,5 @@
-import { Env } from '@/main/config/env'
-console.log(Env.apiURL)
+import { env } from '@/main/config/env'
+
 export const makeApiUrl = (path: string): string => {
-  return `${Env.apiURL}${path}`
+  return `${env.apiURL}${path}`
 }
