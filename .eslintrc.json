@@ -5,7 +5,7 @@
         }
     },
     "extends": [
-        "standard-with-typescript",
+        "eslint-config-standard-with-typescript",
         "plugin:react/recommended"
     ],
     "plugins": [
