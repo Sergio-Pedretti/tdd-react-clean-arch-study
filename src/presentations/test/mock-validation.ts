@@ -1,7 +1,7 @@
 import { type Validation } from '@/presentations/protocols/validation'
 
 export class ValidationSpy implements Validation {
-  errorMessage: string = 'Campo Obrigatório!'
+  errorMessage = 'Campo Obrigatório!'
   fieldName: string
   fieldValue: string
 

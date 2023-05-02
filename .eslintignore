@@ -6,3 +6,4 @@ src/index.html
 vite.config.ts
 *.scss
 .env
+jest.config.js
