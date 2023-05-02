@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
@@ -18,8 +18,9 @@
       "@/*": ["*"],
       "@/tests/*": ["../tests/*"]
     },
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["node", "jest", "vite/client"]
   },
-  "include": ["src", "tests"],
+  "include": ["src", "tests", "src/main/config/.d.ts"],
   "exclude": ["node_modules", "dist"],
 }

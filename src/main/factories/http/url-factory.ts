@@ -1,3 +1,5 @@
+import { Env } from '@/main/config/env'
+console.log(Env.apiURL)
 export const makeApiUrl = (path: string): string => {
-  return `http://fordevs.herokuapp.com/api${path}`
+  return `${Env.apiURL}${path}`
 }

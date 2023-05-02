@@ -5,3 +5,4 @@ src/global.css
 src/index.html
 vite.config.ts
 *.scss
+.env
