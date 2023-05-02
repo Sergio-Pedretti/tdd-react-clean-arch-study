@@ -19,11 +19,5 @@ export default defineConfig({
       preprocessorOptions:{
         use: ["css-loader"],
       }
-    },
-    build: {
-      target: 'esnext',
-    },
-    esbuild: {
-      target: 'esnext'
-    },
+    }
 })
