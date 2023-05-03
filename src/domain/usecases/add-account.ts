@@ -1,6 +1,6 @@
-import { AccountModel } from "../models";
+import { AccountModel } from "@/domain/models";
 
-type AddAccountInput = {
+export type AddAccountInput = {
     name: string
     email: string
     password: string
@@ -8,5 +8,5 @@ type AddAccountInput = {
 }
 
 export interface AddAccount {
-    add: (input: AddAccountInput) => Promise<AccountModel>
+    add: (input: AddAccountInput) => Promise<AccountModel | null>
 }
