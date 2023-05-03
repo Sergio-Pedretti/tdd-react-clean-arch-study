@@ -1,16 +1,17 @@
 import React from 'react'
 import { type RenderResult, render, cleanup, fireEvent, waitFor, screen } from '@testing-library/react'
-import 'jest-localstorage-mock'
 import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Login } from './login'
 import { ValidationSpy, AuthenticationSpy } from '@/presentations/test'
 import { faker } from '@faker-js/faker'
 import { InvalidCredentialsError } from '@/domain/errors'
+import { SaveAccessTokenMock } from '@/presentations/test/mock-save-access-token'
 
 type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
   authenticationSpy: AuthenticationSpy
+  saveAccessTokenMock: SaveAccessTokenMock
 }
 
 const DisplayLocation = (): JSX.Element => {
@@ -21,12 +22,13 @@ const DisplayLocation = (): JSX.Element => {
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const authenticationSpy = new AuthenticationSpy()
+  const saveAccessTokenMock = new SaveAccessTokenMock()
 
   const sut = render(
     <MemoryRouter initialEntries={['/login']}>
       <Routes>
         <Route path='/' element={<div data-testid='main'>main</div>}></Route>
-        <Route path='/login' element={<Login validation={validationSpy} authentication={authenticationSpy} />}></Route>
+        <Route path='/login' element={<Login validation={validationSpy} authentication={authenticationSpy} saveAccessToken={saveAccessTokenMock} />}></Route>
         <Route path='/signup' element={<div data-testid='route'>signup</div>}></Route>
       </Routes>
       <DisplayLocation />
@@ -36,7 +38,8 @@ const makeSut = (): SutTypes => {
   return {
     sut,
     validationSpy,
-    authenticationSpy
+    authenticationSpy,
+    saveAccessTokenMock
   }
 }
 
@@ -74,13 +77,14 @@ describe('Login Component', () => {
   let sut: RenderResult
   let validationSpy: ValidationSpy
   let authenticationSpy: AuthenticationSpy
+  let saveAccessTokenMock: SaveAccessTokenMock
 
   beforeEach(() => {
-    localStorage.clear()
     const initals = makeSut()
     sut = initals.sut
     validationSpy = initals.validationSpy
     authenticationSpy = initals.authenticationSpy
+    saveAccessTokenMock = initals.saveAccessTokenMock
   })
 
   afterEach(cleanup)
@@ -236,14 +240,14 @@ describe('Login Component', () => {
     expect(errorWrap.childElementCount).toBe(1)
   })
 
-  it('should add accessToken to localStorage in success', async () => {
+  it('should call SaveAccessToken on success', async () => {
     validationSpy.errorMessage = ''
     const form = sut.getByTestId('form')
 
     await simulateValidSubmit(sut)
     await waitFor(() => form)
 
-    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+    expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken)
     expect(screen.getByTestId('location-display').textContent).toBe('/')
   })
 
