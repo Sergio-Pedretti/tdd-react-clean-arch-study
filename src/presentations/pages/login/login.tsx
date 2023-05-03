@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom'
 type Props = {
   validation: Validation
   authentication: Authentication
-  saveAccessToken: SaveAccessToken | undefined
+  saveAccessToken: SaveAccessToken
 }
 
 const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props) => {
@@ -48,7 +48,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccess
         password: login.password
       })
       if (account) {
-        await saveAccessToken?.save(account.accessToken)
+        await saveAccessToken.save(account.accessToken)
         navigate('/')
       }
     } catch (error) {
