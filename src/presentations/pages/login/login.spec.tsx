@@ -251,6 +251,21 @@ describe('Login Component', () => {
     expect(screen.getByTestId('location-display').textContent).toBe('/')
   })
 
+  it('should present error if SaveAccessToken fails', async () => {
+   validationSpy.errorMessage = ''
+    const error = new InvalidCredentialsError()
+    const errorWrap = sut.getByTestId('error-wrap')
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+
+    await simulateValidSubmit(sut)
+
+    await waitFor(() => errorWrap)
+    const mainError = sut.getByTestId('main-error')
+
+    expect(mainError.textContent).toBe(error.message)
+    expect(errorWrap.childElementCount).toBe(1)
+  })
+
   it('should go to signup page', async () => {
     const register = sut.getByTestId('signup')
 
@@ -261,4 +276,6 @@ describe('Login Component', () => {
     expect(newPage.textContent).toBe('signup')
     expect(screen.getByTestId('location-display').textContent).toBe('/signup')
   })
+
+  
 })
