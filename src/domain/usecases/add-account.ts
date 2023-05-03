@@ -8,5 +8,5 @@ export type AddAccountInput = {
 }
 
 export interface AddAccount {
-    add: (input: AddAccountInput) => Promise<AccountModel | null>
+    add: (input: AddAccountInput) => Promise<AccountModel | undefined>
 }
