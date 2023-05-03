@@ -8,6 +8,7 @@ export const MakeLogin: React.FC = () => {
     <Login
       authentication={makeRemoteAuthentication()}
       validation={makeLoginValidation()}
+      saveAccessToken={undefined}
     />
   )
 }

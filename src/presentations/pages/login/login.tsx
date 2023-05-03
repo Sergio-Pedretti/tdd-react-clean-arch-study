@@ -3,15 +3,16 @@ import content from './login-style.module.scss'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/components'
 import { LoginProvider, useLogin } from '@/presentations/contexts/form/form-context'
 import { type Validation } from '@/presentations/protocols/validation'
-import { type Authentication } from '@/domain/usecases'
+import { SaveAccessToken, type Authentication } from '@/domain/usecases'
 import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   validation: Validation
   authentication: Authentication
+  saveAccessToken: SaveAccessToken | undefined
 }
 
-const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) => {
+const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props) => {
   const { login, errorState, setErrorState, state, setState } = useLogin()
   const navigate = useNavigate()
   useEffect(() => {
@@ -47,7 +48,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) =
         password: login.password
       })
       if (account) {
-        localStorage.setItem('accessToken', account.accessToken)
+        await saveAccessToken?.save(account.accessToken)
         navigate('/')
       }
     } catch (error) {
@@ -77,10 +78,10 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication }: Props) =
   )
 }
 
-export const Login: React.FC<Props> = ({ validation, authentication }: Props): JSX.Element => {
+export const Login: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props): JSX.Element => {
   return (
     <LoginProvider>
-      <LoginConsumer validation={validation} authentication={authentication}></LoginConsumer>
+      <LoginConsumer validation={validation} authentication={authentication} saveAccessToken={saveAccessToken}></LoginConsumer>
     </LoginProvider>
   )
 }
