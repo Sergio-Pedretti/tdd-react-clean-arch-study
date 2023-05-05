@@ -37,21 +37,18 @@ describe('SignUp Component', () => {
   })
 
   it('should start with initial state', () => {
-    const validationError = ''
+    const validationError = 'Campo Obrigatório!'
 
     Helper.testChildCount(sut, 'error-wrap', 0)
     Helper.testButtonIsDisabled(sut, 'submit', true)
-    Helper.testStatusForField(sut, 'name', '')
+    Helper.testStatusForField(sut, 'name', validationError)
     Helper.testStatusForField(sut, 'email', validationError)
     Helper.testStatusForField(sut, 'password', validationError)
     Helper.testStatusForField(sut, 'passwordConfirmation', validationError)
   })
 
    it('should show name error if validation fails', () => {
-    validationSpy.errorMessage = faker.random.words()
-    const name = faker.name.fullName()
-
-    Helper.populateField(sut, 'email', name)
-    Helper.testStatusForField(sut, 'name', '')
+    Helper.populateField(sut, 'name', '')
+    Helper.testStatusForField(sut, 'name', 'Campo Obrigatório!')
   })
 })

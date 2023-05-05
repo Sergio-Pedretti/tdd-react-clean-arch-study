@@ -15,7 +15,7 @@ const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
     <div className={content.signup}>
       <LoginHeader />
         <form className={content.form}>
-          <h2>Login</h2>
+          <h2>Sign up</h2>
           <Input data-testid='name' type='text' name='name' placeholder='Digite seu nome' />
           <Input data-testid='email' type='email' name='email' placeholder='Digite seu e-mail' />
           <Input data-testid='password' type='password' name='password' placeholder='Digite sua senha' />
