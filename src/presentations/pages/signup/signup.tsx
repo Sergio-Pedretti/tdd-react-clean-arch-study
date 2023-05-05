@@ -2,6 +2,7 @@ import React  from 'react'
 import content from './signup-style.module.scss'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/components'
 import { Link } from 'react-router-dom'
+import { LoginProvider } from '@/presentations/contexts/form/form-context'
 
 const SignUpConsumer: React.FC = () => {
   
@@ -10,11 +11,11 @@ const SignUpConsumer: React.FC = () => {
       <LoginHeader />
         <form className={content.form}>
           <h2>Login</h2>
-          <Input type='text' name='name' placeholder='Digite seu nome' />
-          <Input type='email' name='email' placeholder='Digite seu e-mail' />
-          <Input type='password' name='password' placeholder='Digite sua senha' />
-          <Input type='password' name='passwordConfirmation' placeholder='Confirme sua senha' />
-          <button className={content.submit} type='submit'>Entrar</button>
+          <Input data-testid='name' type='text' name='name' placeholder='Digite seu nome' />
+          <Input data-testid='email' type='email' name='email' placeholder='Digite seu e-mail' />
+          <Input data-testid='password' type='password' name='password' placeholder='Digite sua senha' />
+          <Input data-testid='passwordConfirmation' type='password' name='passwordConfirmation' placeholder='Confirme sua senha' />
+          <button data-testid='submit' disabled className={content.submit} type='submit'>Entrar</button>
           <Link to='/signup' className={content.link}>Voltar Para Login</Link>
           <FormStatus />
         </form>
@@ -25,8 +26,8 @@ const SignUpConsumer: React.FC = () => {
 
 export const SignUp: React.FC = ( ): JSX.Element => {
   return (
-    <>
+    <LoginProvider>
       <SignUpConsumer ></SignUpConsumer>
-    </>
+    </LoginProvider>
   )
 }

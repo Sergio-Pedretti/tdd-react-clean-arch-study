@@ -17,8 +17,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccess
   const navigate = useNavigate()
   useEffect(() => {
     setErrorState({
-      main: errorState.main,
-      passwordError: errorState.passwordError,
+      ...errorState,
       emailError: validation.validate('email', login.email)
     })
 
@@ -27,8 +26,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccess
 
   useEffect(() => {
     setErrorState({
-      main: errorState.main,
-      emailError: errorState.emailError,
+      ...errorState,
       passwordError: validation.validate('password', login.password)
     })
     validation.validate('password', login.password)
