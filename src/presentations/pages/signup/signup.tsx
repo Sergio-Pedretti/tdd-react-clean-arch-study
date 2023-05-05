@@ -1,8 +1,8 @@
-import React  from 'react'
+import React, { useEffect }  from 'react'
 import content from './signup-style.module.scss'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/components'
 import { Link } from 'react-router-dom'
-import { LoginProvider } from '@/presentations/contexts/form/form-context'
+import { LoginProvider, useLogin } from '@/presentations/contexts/form/login-context'
 import { Validation } from '@/presentations/protocols/validation'
 
 type Props = {
@@ -10,6 +10,16 @@ type Props = {
 }
 
 const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
+  const { setErrorState, errorState, signup } = useLogin()
+
+  useEffect(() => {
+    setErrorState({
+      ...errorState,
+      nameError:  signup.name ? '' : 'Campo Obrigatório!'
+    })
+
+    validation?.validate('name', signup.name)
+  }, [signup.name])
   
   return (
     <div className={content.signup}>

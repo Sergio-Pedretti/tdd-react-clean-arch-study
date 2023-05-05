@@ -12,8 +12,6 @@ export const testButtonIsDisabled = (sut: RenderResult, fieldName:string, isDisa
 }
 
 export const testStatusForField = (sut: RenderResult, fieldName:string, validationError: string) => {
-    console.log(fieldName)
-    console.log(validationError ? 'VERMELHO': 'VERDE')
     const fieldStatus = sut.getByTestId(`${fieldName}-status`) 
     expect(fieldStatus.title).toBe(validationError)
     expect(fieldStatus.textContent).toBe(validationError ? '🔴' : '🟢')

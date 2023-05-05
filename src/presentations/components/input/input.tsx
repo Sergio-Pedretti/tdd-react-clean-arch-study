@@ -1,17 +1,22 @@
 import React from 'react'
 import content from './input.module.scss'
-import { useLogin } from '@/presentations/contexts/form/form-context'
+import { useLogin } from '@/presentations/contexts/form/login-context'
 
 interface Props extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   name: string
 }
 
 export const Input: React.FC<Props> = (props: Props) => {
-  const { errorState, setLogin, login } = useLogin()
+  const { errorState, setLogin, login, setSignup, signup } = useLogin()
+  
   const error = errorState[`${props.name}Error`]
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setLogin({
       ...login,
+      [props.name]: event.target.value
+    })
+    setSignup({
+      ...signup,
       [props.name]: event.target.value
     })
   }
