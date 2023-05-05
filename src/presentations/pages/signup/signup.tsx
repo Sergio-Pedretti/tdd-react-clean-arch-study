@@ -3,8 +3,13 @@ import content from './signup-style.module.scss'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/components'
 import { Link } from 'react-router-dom'
 import { LoginProvider } from '@/presentations/contexts/form/form-context'
+import { Validation } from '@/presentations/protocols/validation'
 
-const SignUpConsumer: React.FC = () => {
+type Props = {
+  validation: Validation | undefined
+}
+
+const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
   
   return (
     <div className={content.signup}>
@@ -24,10 +29,10 @@ const SignUpConsumer: React.FC = () => {
   )
 }
 
-export const SignUp: React.FC = ( ): JSX.Element => {
+export const SignUp: React.FC<Props> = ({ validation }:Props): JSX.Element => {
   return (
     <LoginProvider>
-      <SignUpConsumer ></SignUpConsumer>
+      <SignUpConsumer validation={validation} ></SignUpConsumer>
     </LoginProvider>
   )
 }
