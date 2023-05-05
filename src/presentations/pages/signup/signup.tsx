@@ -1,76 +1,21 @@
-import React, { useEffect } from 'react'
-import content from './login-style.module.scss'
+import React  from 'react'
+import content from './signup-style.module.scss'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/components'
-import { LoginProvider, useLogin } from '@/presentations/contexts/form/form-context'
-import { type Validation } from '@/presentations/protocols/validation'
-import { SaveAccessToken, type Authentication } from '@/domain/usecases'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-type Props = {
-  validation: Validation
-  authentication: Authentication
-  saveAccessToken: SaveAccessToken
-}
-
-const SignUpConsumer: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props) => {
-  const { login, errorState, setErrorState, state, setState } = useLogin()
-  const navigate = useNavigate()
-  useEffect(() => {
-    setErrorState({
-      main: errorState.main,
-      passwordError: errorState.passwordError,
-      emailError: validation.validate('email', login.email)
-    })
-
-    validation.validate('email', login.email)
-  }, [login.email])
-
-  useEffect(() => {
-    setErrorState({
-      main: errorState.main,
-      emailError: errorState.emailError,
-      passwordError: validation.validate('password', login.password)
-    })
-    validation.validate('password', login.password)
-  }, [login.password])
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault()
-    try {
-      if (state.isLoading || errorState.emailError || errorState.passwordError) {
-        return
-      }
-      setState({
-        isLoading: true
-      })
-      const account = await authentication.auth({
-        email: login.email,
-        password: login.password
-      })
-      if (account) {
-        await saveAccessToken.save(account.accessToken)
-        navigate('/')
-      }
-    } catch (error) {
-      setState({
-        isLoading: false
-      })
-      setErrorState({
-        ...errorState,
-        main: error.message
-      })
-    }
-  }
-
+const SignUpConsumer: React.FC = () => {
+  
   return (
-    <div className={content.login}>
+    <div className={content.signup}>
       <LoginHeader />
-        <form data-testid='form' className={content.form} onSubmit={handleSubmit}>
+        <form className={content.form}>
           <h2>Login</h2>
+          <Input type='text' name='name' placeholder='Digite seu nome' />
           <Input type='email' name='email' placeholder='Digite seu e-mail' />
           <Input type='password' name='password' placeholder='Digite sua senha' />
-          <button data-testid='submit' disabled={!!errorState.emailError || !!errorState.passwordError} className={content.submit} type='submit'>Entrar</button>
-          <Link to='/signup' data-testid='signup' className={content.link}>Criar conta</Link>
+          <Input type='password' name='passwordConfirmation' placeholder='Confirme sua senha' />
+          <button className={content.submit} type='submit'>Entrar</button>
+          <Link to='/signup' className={content.link}>Voltar Para Login</Link>
           <FormStatus />
         </form>
       <Footer />
@@ -78,10 +23,10 @@ const SignUpConsumer: React.FC<Props> = ({ validation, authentication, saveAcces
   )
 }
 
-export const SignUp: React.FC<Props> = ({ validation, authentication, saveAccessToken }: Props): JSX.Element => {
+export const SignUp: React.FC = ( ): JSX.Element => {
   return (
-    <LoginProvider>
-      <SignUpConsumer validation={validation} authentication={authentication} saveAccessToken={saveAccessToken}></SignUpConsumer>
-    </LoginProvider>
+    <>
+      <SignUpConsumer ></SignUpConsumer>
+    </>
   )
 }
