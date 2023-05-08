@@ -94,4 +94,10 @@ describe('SignUp Component', () => {
   it('should enable button if validation succeeds', () => {
     Helper.simulateValidForm(sut)
   })
+
+  it('should show spinner on submit', async () => {
+    await Helper.simulateValidSubmit(sut)
+    Helper.testElementExists(sut, 'spinner')
+
+  })
 })

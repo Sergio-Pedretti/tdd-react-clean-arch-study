@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker"
-import { RenderResult, fireEvent } from "@testing-library/react"
+import { RenderResult, fireEvent, waitFor } from "@testing-library/react"
 
 export const testChildCount = (sut: RenderResult, field: string, count:number) => {
     const element = sut.getByTestId(field)
@@ -22,6 +22,11 @@ export const populateField = (sut: RenderResult, fieldName: string, value = fake
     fireEvent.change(field, { target: { value } })
 }
 
+export const testElementExists = (sut: RenderResult, fieldName: string) => {
+    const element = sut.getByTestId(fieldName)
+    expect(element).toBeTruthy()
+}
+
 export const simulateValidForm = (
     sut: RenderResult,
     name = faker.name.fullName(),
@@ -33,4 +38,15 @@ export const simulateValidForm = (
     populateField(sut, 'password', password)
     populateField(sut, 'passwordConfirmation', password)
     testButtonIsDisabled(sut, 'submit', false)
+}
+
+export const simulateValidSubmit = async (
+    sut: RenderResult,
+    ) => {
+    simulateValidForm(sut)
+    const submitButton = sut.getByTestId('submit') as HTMLButtonElement
+
+    await waitFor(() => {
+    fireEvent.click(submitButton)
+    })
 }
