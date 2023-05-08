@@ -62,6 +62,11 @@ describe('SignUp Component', () => {
     Helper.testStatusForField(sut, 'password', 'Campo Obrigatório!')
   })
 
+  it('should show passwordConfirmation error if validation fails', () => {
+    Helper.populateField(sut, 'passwordConfirmation', '')
+    Helper.testStatusForField(sut, 'passwordConfirmation', 'Campo Obrigatório!')
+  })
+
   it('should show valid name if validation succeeds ', () => {
     const name = faker.name.fullName()
     Helper.populateField(sut, 'name', name)
