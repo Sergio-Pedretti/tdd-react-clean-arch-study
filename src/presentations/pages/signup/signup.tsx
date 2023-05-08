@@ -54,14 +54,24 @@ const SignUpConsumer: React.FC<Props> = ({ validation, addAccount }:Props) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
+    try {
       if (state.isLoading || errorState.emailError || errorState.passwordError) {
         return
       }
       setState({
         isLoading: true
       })
-      addAccount?.add(signup)
-  }
+      await addAccount?.add(signup)
+    } catch (error) {
+      setState({
+          isLoading: false
+        })
+        setErrorState({
+          ...errorState,
+          main: error.message
+        })
+    }
+}
   
   return (
     <div className={content.signup}>
@@ -80,6 +90,7 @@ const SignUpConsumer: React.FC<Props> = ({ validation, addAccount }:Props) => {
     </div>
   )
 }
+
 
 export const SignUp: React.FC<Props> = ({ validation, addAccount }:Props): JSX.Element => {
   return (
