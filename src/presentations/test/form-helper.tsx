@@ -42,8 +42,11 @@ export const simulateValidForm = (
 
 export const simulateValidSubmit = async (
     sut: RenderResult,
+    name = faker.name.fullName(),
+    email = faker.internet.email(),
+    password = faker.internet.password()
     ) => {
-    simulateValidForm(sut)
+    simulateValidForm(sut, name, email, password)
     const submitButton = sut.getByTestId('submit') as HTMLButtonElement
 
     await waitFor(() => {

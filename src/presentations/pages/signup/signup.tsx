@@ -4,12 +4,14 @@ import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/componen
 import { Link } from 'react-router-dom'
 import { LoginProvider, useLogin } from '@/presentations/contexts/form/login-context'
 import { Validation } from '@/presentations/protocols/validation'
+import { AddAccount } from '@/domain/usecases'
 
 type Props = {
   validation: Validation | undefined
+  addAccount: AddAccount | undefined
 }
 
-const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
+const SignUpConsumer: React.FC<Props> = ({ validation, addAccount }:Props) => {
   const { setErrorState, errorState, signup, state, setState } = useLogin()
 
   const disableButton = !!errorState.nameError || !!errorState.emailError || !!errorState.passwordError || !!errorState.passwordConfirmationError
@@ -58,6 +60,7 @@ const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
       setState({
         isLoading: true
       })
+      addAccount?.add(signup)
   }
   
   return (
@@ -78,10 +81,10 @@ const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
   )
 }
 
-export const SignUp: React.FC<Props> = ({ validation }:Props): JSX.Element => {
+export const SignUp: React.FC<Props> = ({ validation, addAccount }:Props): JSX.Element => {
   return (
     <LoginProvider>
-      <SignUpConsumer validation={validation} ></SignUpConsumer>
+      <SignUpConsumer validation={validation} addAccount={addAccount} ></SignUpConsumer>
     </LoginProvider>
   )
 }
