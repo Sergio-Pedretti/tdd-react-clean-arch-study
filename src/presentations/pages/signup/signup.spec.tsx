@@ -90,4 +90,8 @@ describe('SignUp Component', () => {
     Helper.populateField(sut, 'passwordConfirmation', passwordConfirmation)
     Helper.testStatusForField(sut, 'passwordConfirmation', '')
   })
+
+  it('should enable button if validation succeeds', () => {
+    Helper.simulateValidForm(sut)
+  })
 })

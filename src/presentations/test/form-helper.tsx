@@ -21,3 +21,16 @@ export const populateField = (sut: RenderResult, fieldName: string, value = fake
     const field = sut.getByTestId(fieldName)
     fireEvent.change(field, { target: { value } })
 }
+
+export const simulateValidForm = (
+    sut: RenderResult,
+    name = faker.name.fullName(),
+    email = faker.internet.email(),
+    password = faker.internet.password()
+    ) => {
+    populateField(sut, 'name', name)
+    populateField(sut, 'email', email)
+    populateField(sut, 'password', password)
+    populateField(sut, 'passwordConfirmation', password)
+    testButtonIsDisabled(sut, 'submit', false)
+}
