@@ -106,7 +106,7 @@ describe('SignUp Component', () => {
     Helper.testElementExists(sut, 'spinner')
   })
 
-  it('should call add account with correct values', async () => {
+  it('should call AddAccount with correct values', async () => {
     const name = faker.name.fullName()
     const email = faker.internet.email()
     const password = faker.internet.password()
@@ -119,5 +119,11 @@ describe('SignUp Component', () => {
       password,
       passwordConfirmation: password,
     })
+  })
+
+  it('should call AddAccount only once', async () => {
+    await Promise.all([Helper.simulateValidSubmit(sut), Helper.simulateValidSubmit(sut)])
+
+    expect(addAccountSpy.countCalls).toBe(1)
   })
 })
