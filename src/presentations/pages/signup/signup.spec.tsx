@@ -6,6 +6,7 @@ import { faker } from "@faker-js/faker"
 import { ValidationSpy } from "@/presentations/test"
 import { Helper } from "@/presentations/test"
 import { AddAccountSpy } from "@/presentations/test/mock-add-account"
+import { EmailInUseError } from "@/domain/errors"
 
 type SutTypes = {
   sut: RenderResult
@@ -41,6 +42,10 @@ describe('SignUp Component', () => {
     validationSpy = initals.validationSpy
     addAccountSpy = initals.addAccountSpy
   })
+
+    afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   it('should start with initial state', () => {
     validationSpy.errorMessage = 'Campo Obrigatório!'
@@ -133,5 +138,15 @@ describe('SignUp Component', () => {
     fireEvent.submit(form)
 
     expect(addAccountSpy.countCalls).toBe(0)
+  })
+
+  it('should present Error if AddAccount fails', async () => {
+    const error = new EmailInUseError()
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error)
+    
+    await Helper.simulateValidSubmit(sut)
+
+    Helper.testElementText(sut, 'main-error', error.message)
+    Helper.testChildCount(sut, 'error-wrap', 1)
   })
 })

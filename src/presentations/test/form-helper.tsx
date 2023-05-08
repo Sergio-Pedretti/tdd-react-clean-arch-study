@@ -27,6 +27,11 @@ export const testElementExists = (sut: RenderResult, fieldName: string) => {
     expect(element).toBeTruthy()
 }
 
+export const testElementText = (sut: RenderResult, fieldName: string, text: string) => {
+    const element = sut.getByTestId(fieldName)
+    expect(element.textContent).toBe(text)
+}
+
 export const simulateValidForm = (
     sut: RenderResult,
     name = faker.name.fullName(),
