@@ -12,6 +12,8 @@ type Props = {
 const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
   const { setErrorState, errorState, signup } = useLogin()
 
+  const disableButton = !!errorState.nameError || !!errorState.emailError || !!errorState.passwordError || !!errorState.passwordConfirmationError
+
   useEffect(() => {
     setErrorState({
       ...errorState,
@@ -57,7 +59,7 @@ const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
           <Input data-testid='email' type='email' name='email' placeholder='Digite seu e-mail' />
           <Input data-testid='password' type='password' name='password' placeholder='Digite sua senha' />
           <Input data-testid='passwordConfirmation' type='password' name='passwordConfirmation' placeholder='Confirme sua senha' />
-          <button data-testid='submit' disabled className={content.submit} type='submit'>Entrar</button>
+          <button data-testid='submit' disabled={disableButton} className={content.submit} type='submit'>Entrar</button>
           <Link to='/signup' className={content.link}>Voltar Para Login</Link>
           <FormStatus />
         </form>
