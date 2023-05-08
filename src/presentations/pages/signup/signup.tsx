@@ -38,6 +38,15 @@ const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
 
     validation?.validate('password', signup.password)
   }, [signup.password])
+
+  useEffect(() => {
+    setErrorState({
+      ...errorState,
+      passwordConfirmationError:  signup.passwordConfirmation ? '' : 'Campo Obrigatório!'
+    })
+
+    validation?.validate('passwordConfirmation', signup.passwordConfirmation)
+  }, [signup.passwordConfirmation])
   
   return (
     <div className={content.signup}>
