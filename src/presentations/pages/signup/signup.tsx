@@ -20,6 +20,15 @@ const SignUpConsumer: React.FC<Props> = ({ validation }:Props) => {
 
     validation?.validate('name', signup.name)
   }, [signup.name])
+
+  useEffect(() => {
+    setErrorState({
+      ...errorState,
+      emailError:  signup.email ? '' : 'Campo Obrigatório!'
+    })
+
+    validation?.validate('email', signup.email)
+  }, [signup.email])
   
   return (
     <div className={content.signup}>
