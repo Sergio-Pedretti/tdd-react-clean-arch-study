@@ -78,4 +78,10 @@ describe('SignUp Component', () => {
     Helper.populateField(sut, 'email', email)
     Helper.testStatusForField(sut, 'email', '')
   })
+
+  it('should show valid password if validation succeeds', () => {
+    const password = faker.internet.password()
+    Helper.populateField(sut, 'password', password)
+    Helper.testStatusForField(sut, 'password', '')
+  })
 })
