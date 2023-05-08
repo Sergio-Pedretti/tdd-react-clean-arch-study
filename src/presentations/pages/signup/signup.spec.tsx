@@ -1,5 +1,5 @@
 import React from "react"
-import { RenderResult, render } from "@testing-library/react"
+import { RenderResult, fireEvent, render } from "@testing-library/react"
 import { SignUp } from "./signup"
 import { MemoryRouter, Routes, Route } from "react-router-dom"
 import { faker } from "@faker-js/faker"
@@ -125,5 +125,13 @@ describe('SignUp Component', () => {
     await Promise.all([Helper.simulateValidSubmit(sut), Helper.simulateValidSubmit(sut)])
 
     expect(addAccountSpy.countCalls).toBe(1)
+  })
+
+  it('should not call Authentication if form is invalid', () => {
+    const form = sut.getByTestId('form')
+
+    fireEvent.submit(form)
+
+    expect(addAccountSpy.countCalls).toBe(0)
   })
 })
