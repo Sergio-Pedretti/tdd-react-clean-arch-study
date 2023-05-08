@@ -67,9 +67,15 @@ describe('SignUp Component', () => {
     Helper.testStatusForField(sut, 'passwordConfirmation', 'Campo Obrigatório!')
   })
 
-  it('should show valid name if validation succeeds ', () => {
+  it('should show valid name if validation succeeds', () => {
     const name = faker.name.fullName()
     Helper.populateField(sut, 'name', name)
     Helper.testStatusForField(sut, 'name', '')
+  })
+
+  it('should show valid email if validation succeeds', () => {
+    const email = faker.internet.email()
+    Helper.populateField(sut, 'email', email)
+    Helper.testStatusForField(sut, 'email', '')
   })
 })
