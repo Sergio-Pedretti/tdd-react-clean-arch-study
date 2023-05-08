@@ -5,35 +5,41 @@ import { MemoryRouter, Routes, Route } from "react-router-dom"
 import { faker } from "@faker-js/faker"
 import { ValidationSpy } from "@/presentations/test"
 import { Helper } from "@/presentations/test"
+import { AddAccountSpy } from "@/presentations/test/mock-add-account"
 
 type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
+  addAccountSpy: AddAccountSpy
 }
 
 const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
+    const addAccountSpy = new AddAccountSpy()
     const sut = render(
     <MemoryRouter initialEntries={['/signup']}>
       <Routes>
-        <Route path='/signup' element={<SignUp validation={validationSpy} />}></Route>
+        <Route path='/signup' element={<SignUp validation={validationSpy} addAccount={addAccountSpy}/>}></Route>
       </Routes>
     </MemoryRouter>
   )
     return {
         sut,
-        validationSpy
+        validationSpy,
+        addAccountSpy
     }
 }
 
 describe('SignUp Component', () => {
     let sut: RenderResult
     let validationSpy: ValidationSpy
+    let addAccountSpy: AddAccountSpy
 
     beforeEach(() => {
     const initals = makeSut()
     sut = initals.sut
     validationSpy = initals.validationSpy
+    addAccountSpy = initals.addAccountSpy
   })
 
   it('should start with initial state', () => {
@@ -98,6 +104,20 @@ describe('SignUp Component', () => {
   it('should show spinner on submit', async () => {
     await Helper.simulateValidSubmit(sut)
     Helper.testElementExists(sut, 'spinner')
+  })
 
+  it('should call add account with correct values', async () => {
+    const name = faker.name.fullName()
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+
+    await Helper.simulateValidSubmit(sut, name, email, password)
+
+    expect(addAccountSpy.input).toEqual({
+      name,
+      email,
+      password,
+      passwordConfirmation: password,
+    })
   })
 })
