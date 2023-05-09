@@ -88,7 +88,7 @@ const SignUpConsumer: React.FC<Props> = ({ validation, addAccount, saveAccessTok
           <Input type='password' name='password' placeholder='Digite sua senha' />
           <Input type='password' name='passwordConfirmation' placeholder='Confirme sua senha' />
           <button data-testid='submit' disabled={disableButton} className={content.submit} type='submit'>Entrar</button>
-           <Link to='/login' data-testid='login' className={content.link}>Logar na conta</Link>
+           <Link to='/login' replace data-testid='login' className={content.link}>Logar na conta</Link>
           <FormStatus />
         </form>
       <Footer />
