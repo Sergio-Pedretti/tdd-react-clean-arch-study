@@ -6,7 +6,7 @@ import { faker } from "@faker-js/faker"
 import { SaveAccessTokenMock, ValidationSpy } from "@/presentations/test"
 import { Helper } from "@/presentations/test"
 import { AddAccountSpy } from "@/presentations/test/mock-add-account"
-import { EmailInUseError } from "@/domain/errors"
+import { EmailInUseError, InvalidCredentialsError } from "@/domain/errors"
 
 type SutTypes = {
   sut: RenderResult
@@ -175,5 +175,19 @@ describe('SignUp Component', () => {
 
     expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
     expect(screen.getByTestId('location-display').textContent).toBe('/')
+  })
+
+  it('should present error if SaveAccessToken fails', async () => {
+    const error = new InvalidCredentialsError()
+    const errorWrap = sut.getByTestId('error-wrap')
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+
+    await Helper.simulateValidSubmit(sut)
+
+    await waitFor(() => errorWrap)
+    const mainError = sut.getByTestId('main-error')
+
+    expect(mainError.textContent).toBe(error.message)
+    expect(errorWrap.childElementCount).toBe(1)
   })
 })
