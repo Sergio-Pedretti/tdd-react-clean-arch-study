@@ -64,7 +64,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccess
     <div className={content.login}>
       <LoginHeader />
         <form data-testid='form' className={content.form} onSubmit={handleSubmit}>
-          <h2>Login</h2>
+          <h2 data-testid='title'>Login</h2>
           <Input type='email' name='email' placeholder='Digite seu e-mail' />
           <Input type='password' name='password' placeholder='Digite sua senha' />
           <button data-testid='submit' disabled={!!errorState.emailError || !!errorState.passwordError} className={content.submit} type='submit'>Entrar</button>
