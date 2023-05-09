@@ -1,9 +1,9 @@
 import React from "react"
-import { RenderResult, fireEvent, render } from "@testing-library/react"
+import { RenderResult, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { SignUp } from "./signup"
-import { MemoryRouter, Routes, Route } from "react-router-dom"
+import { MemoryRouter, Routes, Route, useLocation } from "react-router-dom"
 import { faker } from "@faker-js/faker"
-import { ValidationSpy } from "@/presentations/test"
+import { SaveAccessTokenMock, ValidationSpy } from "@/presentations/test"
 import { Helper } from "@/presentations/test"
 import { AddAccountSpy } from "@/presentations/test/mock-add-account"
 import { EmailInUseError } from "@/domain/errors"
@@ -12,22 +12,38 @@ type SutTypes = {
   sut: RenderResult
   validationSpy: ValidationSpy
   addAccountSpy: AddAccountSpy
+  saveAccessTokenMock: SaveAccessTokenMock
+}
+
+const DisplayLocation = (): JSX.Element => {
+  const location = useLocation()
+  return <div data-testid="location-display">{location.pathname}</div>
 }
 
 const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
     const addAccountSpy = new AddAccountSpy()
+    const saveAccessTokenMock = new SaveAccessTokenMock()
+
     const sut = render(
     <MemoryRouter initialEntries={['/signup']}>
       <Routes>
-        <Route path='/signup' element={<SignUp validation={validationSpy} addAccount={addAccountSpy}/>}></Route>
+        <Route path='/' element={<div data-testid='main'>main</div>}>
+        </Route>
+        <Route path='/signup' element={<SignUp 
+        validation={validationSpy} 
+        addAccount={addAccountSpy}
+        saveAccessToken={saveAccessTokenMock}/>}
+        ></Route>
       </Routes>
+      <DisplayLocation />
     </MemoryRouter>
   )
     return {
         sut,
         validationSpy,
-        addAccountSpy
+        addAccountSpy,
+        saveAccessTokenMock
     }
 }
 
@@ -35,12 +51,14 @@ describe('SignUp Component', () => {
     let sut: RenderResult
     let validationSpy: ValidationSpy
     let addAccountSpy: AddAccountSpy
+    let saveAccessTokenMock: SaveAccessTokenMock
 
     beforeEach(() => {
     const initals = makeSut()
     sut = initals.sut
     validationSpy = initals.validationSpy
     addAccountSpy = initals.addAccountSpy
+    saveAccessTokenMock = initals.saveAccessTokenMock
   })
 
     afterEach(() => {
@@ -148,5 +166,14 @@ describe('SignUp Component', () => {
 
     Helper.testElementText(sut, 'main-error', error.message)
     Helper.testChildCount(sut, 'error-wrap', 1)
+  })
+
+   it('should call SaveAccessToken on success', async () => {
+    const form = sut.getByTestId('form')
+    await Helper.simulateValidSubmit(sut)
+    await waitFor(() => form)
+
+    expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken)
+    expect(screen.getByTestId('location-display').textContent).toBe('/')
   })
 })
