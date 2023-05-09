@@ -3,10 +3,11 @@ import { RenderResult, fireEvent, render, screen, waitFor } from "@testing-libra
 import { SignUp } from "./signup"
 import { MemoryRouter, Routes, Route, useLocation } from "react-router-dom"
 import { faker } from "@faker-js/faker"
-import { SaveAccessTokenMock, ValidationSpy } from "@/presentations/test"
+import { AuthenticationSpy, SaveAccessTokenMock, ValidationSpy } from "@/presentations/test"
 import { Helper } from "@/presentations/test"
 import { AddAccountSpy } from "@/presentations/test/mock-add-account"
 import { EmailInUseError, InvalidCredentialsError } from "@/domain/errors"
+import { Login } from "../login/login"
 
 type SutTypes = {
   sut: RenderResult
@@ -24,6 +25,7 @@ const makeSut = (): SutTypes => {
     const validationSpy = new ValidationSpy()
     const addAccountSpy = new AddAccountSpy()
     const saveAccessTokenMock = new SaveAccessTokenMock()
+    const authenticationSpy = new AuthenticationSpy()
 
     const sut = render(
     <MemoryRouter initialEntries={['/signup']}>
@@ -35,6 +37,7 @@ const makeSut = (): SutTypes => {
         addAccount={addAccountSpy}
         saveAccessToken={saveAccessTokenMock}/>}
         ></Route>
+        <Route path='/login' element={<Login validation={validationSpy} authentication={authenticationSpy} saveAccessToken={saveAccessTokenMock} />}></Route>
       </Routes>
       <DisplayLocation />
     </MemoryRouter>
@@ -189,5 +192,16 @@ describe('SignUp Component', () => {
 
     expect(mainError.textContent).toBe(error.message)
     expect(errorWrap.childElementCount).toBe(1)
+  })
+
+  it('should go to login page', async () => {
+    const login = sut.getByTestId('login')
+
+    fireEvent.click(login)
+
+    const title = sut.getByTestId('title')
+
+    expect(title.textContent).toBe('Login')
+    expect(screen.getByTestId('location-display').textContent).toBe('/login')
   })
 })
