@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext } from 'react'
 
 type stateProps = {
   isLoading: boolean
+  invalidForm: boolean
 }
 
 type errorStateProps = {
@@ -37,7 +38,8 @@ type LoginContextProps = {
 
 const loginProps: LoginContextProps = {
   state: {
-    isLoading: false
+    isLoading: false,
+    invalidForm: true
   },
   setState: () => {},
   errorState: {
@@ -69,7 +71,8 @@ interface LoginProviderProps {
 }
 export const LoginProvider = ({ children }: LoginProviderProps): JSX.Element => {
   const [state, setState] = useState<stateProps>({
-    isLoading: false
+    isLoading: false,
+    invalidForm: true,
   })
   const [errorState, setErrorState] = useState<errorStateProps>({
     emailError: 'Campo Obrigatório!',

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import content from './login-style.module.scss'
-import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/components'
+import { LoginHeader, Footer, Input, FormStatus, SubmitButton } from '@/presentations/components'
 import { LoginProvider, useLogin } from '@/presentations/contexts/form/login-context'
 import { type Validation } from '@/presentations/protocols/validation'
 import { SaveAccessToken, type Authentication } from '@/domain/usecases'
@@ -35,11 +35,12 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccess
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     try {
-      if (state.isLoading || errorState.emailError || errorState.passwordError) {
+      if (state.isLoading || state.invalidForm) {
         return
       }
       setState({
-        isLoading: true
+        isLoading: true,
+        invalidForm: false
       })
       const account = await authentication.auth({
         email: login.email,
@@ -51,7 +52,8 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccess
       }
     } catch (error) {
       setState({
-        isLoading: false
+        isLoading: false,
+        invalidForm: false
       })
       setErrorState({
         ...errorState,
@@ -60,6 +62,13 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccess
     }
   }
 
+ useEffect(() => {
+    setState({
+    ...state,
+    invalidForm: !!errorState.emailError || !!errorState.passwordError
+    })
+  },[errorState])
+
   return (
     <div className={content.login}>
       <LoginHeader />
@@ -67,7 +76,7 @@ const LoginConsumer: React.FC<Props> = ({ validation, authentication, saveAccess
           <h2 data-testid='title'>Login</h2>
           <Input type='email' name='email' placeholder='Digite seu e-mail' />
           <Input type='password' name='password' placeholder='Digite sua senha' />
-          <button data-testid='submit' disabled={!!errorState.emailError || !!errorState.passwordError} className={content.submit} type='submit'>Entrar</button>
+          <SubmitButton text='Entrar'/>
           <Link to='/signup' data-testid='signup' className={content.link}>Criar conta</Link>
           <FormStatus />
         </form>
