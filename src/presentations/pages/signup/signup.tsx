@@ -1,19 +1,20 @@
 import React, { useEffect }  from 'react'
 import content from './signup-style.module.scss'
 import { LoginHeader, Footer, Input, FormStatus } from '@/presentations/components'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LoginProvider, useLogin } from '@/presentations/contexts/form/login-context'
 import { Validation } from '@/presentations/protocols/validation'
-import { AddAccount } from '@/domain/usecases'
+import { AddAccount, SaveAccessToken } from '@/domain/usecases'
 
 type Props = {
   validation: Validation | undefined
   addAccount: AddAccount | undefined
+  saveAccessToken: SaveAccessToken | undefined
 }
 
-const SignUpConsumer: React.FC<Props> = ({ validation, addAccount }:Props) => {
+const SignUpConsumer: React.FC<Props> = ({ validation, addAccount, saveAccessToken }:Props) => {
   const { setErrorState, errorState, signup, state, setState } = useLogin()
-
+  const navigate = useNavigate()
   const disableButton = !!errorState.nameError || !!errorState.emailError || !!errorState.passwordError || !!errorState.passwordConfirmationError
 
   useEffect(() => {
@@ -61,7 +62,11 @@ const SignUpConsumer: React.FC<Props> = ({ validation, addAccount }:Props) => {
       setState({
         isLoading: true
       })
-      await addAccount?.add(signup)
+      const account = await addAccount?.add(signup)
+      if(account){
+        await saveAccessToken?.save(account.accessToken)
+        navigate('/')
+      }
     } catch (error) {
       setState({
           isLoading: false
@@ -92,10 +97,10 @@ const SignUpConsumer: React.FC<Props> = ({ validation, addAccount }:Props) => {
 }
 
 
-export const SignUp: React.FC<Props> = ({ validation, addAccount }:Props): JSX.Element => {
+export const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }:Props): JSX.Element => {
   return (
     <LoginProvider>
-      <SignUpConsumer validation={validation} addAccount={addAccount} ></SignUpConsumer>
+      <SignUpConsumer validation={validation} addAccount={addAccount} saveAccessToken={saveAccessToken}></SignUpConsumer>
     </LoginProvider>
   )
 }

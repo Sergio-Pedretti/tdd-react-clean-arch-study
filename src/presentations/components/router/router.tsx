@@ -9,7 +9,11 @@ export const Router: React.FC = (): JSX.Element => {
         <Routes>
             <Route path='/' element={<div >START</div>} />
             <Route path='/login' index element={<MakeLogin />} />
-            <Route path='/signup' element={<SignUp validation={undefined} addAccount={undefined}/>} />
+            <Route path='/signup' element={<SignUp 
+            validation={undefined} 
+            addAccount={undefined}
+            saveAccessToken={undefined}
+            />} />
         </Routes>
     </BrowserRouter>
   )
